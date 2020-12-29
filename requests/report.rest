@@ -1,0 +1,16 @@
+GET http://localhost:3000/report-doctor-list-test
+
+###
+GET http://localhost:3000/
+
+
+###
+
+GET http://localhost:3000/report-doctor-list-pdf
+
+
+###
+GET http://localhost:3000/report-doctor-list-docx
+
+###
+GET http://localhost:3000/report-doctor-list-xlsx

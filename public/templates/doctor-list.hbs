@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor List</title>
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/report-preview.css">
+</head>
+
+<body class="report-a4-portrait">
+    <table style="width: 100%;">
+        <tr >
+            <td class="report-title" >
+                New Report title
+            </td>
+        </tr>
+    </table>
+    <table border="1" class="table">
+        <thead style=" display: table-header-group; break-inside: avoid;">
+            <tr>
+                <th style="width: 20%;">ID</th>
+                <th style="width: 20%;">Last Name</th>
+                <th style="width: 15%;">First Name</th>
+                <th>Address</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {{#each doctors}}
+            <tr style="page-break-inside: avoid;">
+                <td>{{id}}</td>
+                <td>{{lastName}}</td>
+                <td>{{firstName}}</td>
+                <td>{{address}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+    <div>URL Image</div>
+    <div style="page-break-before: always;" class="image-container">
+        <img src="{{ getImageUrl '1.jpg'}}" alt="Image 1">
+        <img src="{{ getImageUrl '2.jpg'}}" alt="Image 2">
+        <img src="{{ getImageUrl '3.jpeg'}}" alt="Image 3">
+        <img src="{{ getImageUrl '4.jpg'}}" alt="Image 6">
+        <img src="{{ getImageUrl '5.jpg'}}" alt="Image 5">
+        <img src="{{ getImageUrl '6.jpg'}}" alt="Image 6">
+    </div>
+    <div>Base 64 Image</div>
+    <div style="page-break-before: always;" class="image-container">
+        {{#each images}}
+            <img src="{{ base64Data }}" alt= "{{imageName}}">
+        {{/each}}
+    </div>
+</body>
+
+</html>

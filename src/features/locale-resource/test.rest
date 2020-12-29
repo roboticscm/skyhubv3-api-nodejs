@@ -1,0 +1,47 @@
+GET http://localhost:8080/locale-resource?companyId=1&locale=vi-VN
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtoYWkubHYiLCJ1c2VySWQiOiIyIiwiZnVsbE5hbWUiOiIuLi4iLCJleHAiOjE2MTQwODk1NDUsImlhdCI6MTYwODA4OTU0NX0.DvK2ZRW2wqeT3IJ5ueCgUdCN9ir8MG5sdC7uL8hc53jJ_65Mc1czyZ3mTeSXljH5MInk1RG_l1F29nIn3_Ovk7D22n8JH_IOkKsP0GzncKGY9s0eRbMx9WfK5koTZH3_qAd-lb2_wCaHW2NgF_KLgsJV4zCpJroAU2tCi0R9wGS_yDw8k2EhFzwaMvB9dUIxM_rb7YGr0S4ePJ6vHlOgm9PIVJ57CkU4L5uTRjW9h3nFIEYLiGwy9wYDIz0sR9oFy1JsfYfc0pxkcky5cGKG4tUP9XkSWsz-s5Czfth0V95SH42_m2_gLsWPxXm_dgDX1roZDd0EOOaVTh-FqSwcJA
+
+###
+
+
+GET http://localhost:8080/locale-resource/get-initial?locale=vi-VN
+
+###
+
+POST http://localhost:8080/locale-resource
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJBY2Nlc3NUb2tlbiI6ImxldmVsMSIsIkN1c3RvbVVzZXJJbmZvIjp7IlVzZXJJZCI6MTAwLCJVc2VyTmFtZSI6ImtoYWkubHYiLCJGdWxsTmFtZSI6Ikx5IFZhbiBLaGFpIn0sImV4cCI6MTYwNjEyMDI0Mn0.UwQivrT2RsCC5_XXuPcSn_niuXS16ybpYcETktEdJCZR-lDqQuBbOtGn4tkf-qmZ_XonsnVJwdvZBf1ieMRd8NeiVMyFyEZ3mjh6PxhsmBufXY5WiaC1nhfsbfNg0qEJn7LPe0TyA0YJUlNRmIi5_NrydxnuJSxOuAeDMz4RrhE
+
+{
+    "key": "Other6111",
+    "value": "Khác4",
+    "createdBy": 123,
+    "updatedBy": null
+}
+
+
+###
+
+PUT http://localhost:8080/locale-resources
+Content-Type: application/json
+
+{
+    "id": 1,
+    "key": "Other61",
+    "value": "Khác4...",
+    "createdBy": 123,
+    "updatedBy": null
+}
+
+###
+DELETE http://localhost:8080/locale-resources
+Content-Type: application/json
+
+{
+    "id": 2446887879964623897
+}
+
+
+###
+GET http://localhost:8080/locale-resources/report

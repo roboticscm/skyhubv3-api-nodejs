@@ -1,0 +1,10 @@
+
+
+POST http://localhost:8080/menu-history
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJ1c2VySWQiOiIyNDYzNjY4NTU1Nzg3Mjc1MjUzIiwiZnVsbE5hbWUiOiIuLi4iLCJleHAiOjE2MTQwODM3OTYsImlhdCI6MTYwODA4Mzc5Nn0.Vfr6f8UTPLRfqQQjW_RktkivwsWGHZrfiIlHk5djtq_XD6tSAUYhfjBsHn2rqCT0SfYzLneHQ7qYzVhIkOOfCvLwvgRbYPRhHM_-AL6vOgCTZk08VUGkomqmaHlGq79I4djhf9lAA_W69ceQiUnSJsFraQZEn-5uC3D8RW-UxqX96Gt5jZUlptlP7fRMnhc3Ug_8eEGArQ4EGTWQJJBaEE1euzAeb8gJNZNw4TlAp1rLy5Onfpn661e9L0IlJLy9o8RylGpawXzcleZgsoxNRb9iWvEK2viCwrqNw3QWUcLmXCji1FKhTALfoveQT0rtGyNwu0t2Y4MhlPmKi54H9w
+
+{
+    "menuId": 24,
+    "depId": 4
+}
