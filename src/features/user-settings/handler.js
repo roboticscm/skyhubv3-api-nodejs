@@ -49,10 +49,12 @@ export const saveUserSettingsHandler = async (req, res, next) => {
 }
 
 export const getUserSettingsHandler = (req, res, next) => {
-    const { userId, menuPath, elementId, key, keys } = req.query;
-
+    const { userId, menuPath, elementId, key, keys, branchId } = req.query;
     selectObj(res, 'user_setting', (builder) => {
         builder.where('accountId', userId);
+        if (branchId) {
+            builder.andWhere('branchId', branchId)
+        }
         if (menuPath) {
             builder.andWhere('menuPath', menuPath)
         }

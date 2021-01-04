@@ -19,6 +19,10 @@ export const convertFieldsToCamelCase = (obj) => {
     return obj;
 }
 
+export const isNumber = (source ) => {
+    
+}
+
 export const getCurrentTime = () => {
     return (new Date()).getTime();
 }

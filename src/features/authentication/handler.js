@@ -113,3 +113,7 @@ export const logoutHandler = (req, res, next) => {
         
     } 
 }
+
+export const changePasswordHandler = (req, res, next) => {
+    console.log(req.body);
+}
