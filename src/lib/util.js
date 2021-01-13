@@ -1,3 +1,5 @@
+const sha1 = require('js-sha1');
+
 export const isDevMode = (process.env.NODE_ENV || 'development') === 'development';
 export const snakeToCamelCase = (str) =>
     str.replace(/([-_][a-z])/g, (group) =>
@@ -27,3 +29,6 @@ export const getCurrentTime = () => {
     return (new Date()).getTime();
 }
 
+export const encodePassword = (source) => {
+    return sha1(`${process.env.PRIVATE_KEY || 'Skyhub@010116'}${source}`)
+}

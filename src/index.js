@@ -75,6 +75,10 @@ app.get('/', (req, res) => {
     res.render('main', {layout : 'index'});
 });
 
+app.get('/test', (req, res) => {
+    res.status(200).send("{\"status\" : \"abc...\"}");
+});
+
 const loadImageToBase64 = async () => {
     const result = [
         {
@@ -327,15 +331,23 @@ class Server {
 }
 
 const notifyListener = async () => {
-    const knex = getKnexInstance();
-    const connection = await knex.client.acquireConnection();
-    connection.query('LISTEN event_channel');
-    connection.on('notification', (msg) => {
-        const obj = JSONbigString.parse(msg.payload);
-        obj.data = convertFieldsToCamelCase(obj.data);
-        notify$.next(JSON.stringify(obj));
-    });
-    await knex.client.releaseConnection(connection);
+    try {
+        const knex = getKnexInstance();
+        const connection = await knex.client.acquireConnection();
+        connection.query('LISTEN event_channel');
+        connection.on('notification', (msg) => {
+            const obj = JSONbigString.parse(msg.payload);
+            obj.data = convertFieldsToCamelCase(obj.data);
+            notify$.next(JSON.stringify(obj));
+        });
+        await knex.client.releaseConnection(connection);
+    } catch (e) {
+        console.log('Notify listener is reconnecting...')
+        knex.destroy();
+        setTimeout(() => {
+            notifyListener();
+        }, 1000);
+    }
 }
 
 

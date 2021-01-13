@@ -81,7 +81,7 @@ export const saveOrUpdate = async (req, res, tableName, updateWhereCallback, upd
             }).update({ ...updatePayload, ...updateSystemFields(userId) })
             .then((updatedRows) => {
                 if (!updatedRows) {
-                    knex(tableName).insert({
+                    knex(tableName).returning('*').insert({
                         ...insertPayload,
                         ...createSystemFields(userId)
                     }).then((ret) => {
@@ -101,7 +101,7 @@ export const saveOrUpdate = async (req, res, tableName, updateWhereCallback, upd
                 knex.destroy();
             })
         } else {
-            knex(tableName).insert({
+            knex(tableName).returning('*').insert({
                 ...insertPayload,
                 ...createSystemFields(userId)
             }).then((ret) => {
@@ -115,4 +115,46 @@ export const saveOrUpdate = async (req, res, tableName, updateWhereCallback, upd
         }
         
     })
+}
+
+export const save = async (req, res, tableName, insertPayload) => {
+    const { userId } = req.query;
+    const knex = getKnexInstance();
+
+    return new Promise((resolve, reject) => {
+        knex(tableName).returning('*').insert({
+            ...insertPayload,
+            ...createSystemFields(userId)
+        }).then((ret) => {
+            resolve({
+                message: ret
+            });
+        }).catch((err) => error400(res, err))
+        .finally(() => {
+            knex.destroy();
+        })
+        
+    })
+}
+
+
+export const update = async (req, res, tableName, updateWhereCallback, updatePayload) => {
+    const { userId } = req.query;
+    const knex = getKnexInstance();
+
+    return new Promise((resolve, reject) => {
+        knex(tableName).where((builder) => {
+            updateWhereCallback(builder);
+        }).update({ ...updatePayload, ...updateSystemFields(userId) })
+        .then((ret) => {
+            resolve({
+                message: ret
+            });
+        }).catch ((err) => {
+            error400(res, err);
+        }).finally (() => {
+            knex.destroy();
+        });
+        
+    });
 }

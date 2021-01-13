@@ -1,7 +1,9 @@
 import { PRIVATE_KEY, PUBLIC_KEY } from '$/src/index';
 import { getKnexInstance } from '$/src/db/util';
-import { select, del } from '$/src/db/template';
+import { select, del, selectObj, update } from '$/src/db/template';
 import jwt from 'jsonwebtoken';
+import { encodePassword } from '$/src/lib/util';
+import { errorf } from '$/src/errors/common';
 
 export const loginHandler = (req, res, next) => {
     const { username, userId, fullName } = req.body;
@@ -115,5 +117,19 @@ export const logoutHandler = (req, res, next) => {
 }
 
 export const changePasswordHandler = (req, res, next) => {
-    console.log(req.body);
+    const { userId } = req.query;
+    const { currentPassword, newPassword } = req.body;
+
+    selectObj(res, 'account', (wb) => wb.where({id: userId})).then((r) => {
+        if(r.length > 0) {
+            const encodeCurrentPassword = encodePassword(currentPassword);
+            if(encodeCurrentPassword === r[0].password) {
+                update(req, res, 'account', (wb) => wb.where({id: userId}), {password: encodePassword(newPassword)}).then((ret) => {
+                    res.status(200).send(ret);
+                });
+            } else {
+                errorf(res, "currentPassword", "SYS.MSG.CURRENT_PASSWORD_IS_INCORRECT")
+            }
+        }
+    });
 }

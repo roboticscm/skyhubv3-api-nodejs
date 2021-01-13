@@ -79,9 +79,20 @@ export const hasAnyDeletedRecordHandler = (req, res, next) => {
     })    
 }
 
+// _company_id bigint,
+// 	_branch_id bigint,
+// 	_menu_path text,
+// 	_ip_client text,
+// 	_device text,
+// 	_os text,
+// 	_browser text,
+//     _reason text
+    
+
 export const restoreOrForeverDeleteHandler = (req, res, next) => {
-    const { tableName, userId} = req.query;
-    let { deleteIds, restoreIds } = req.query;
+    const { tableName, userId, companyId, branchId, menuPath, ipClient, device, os, browser, fieldName} = req.query;
+    let { deleteIds, restoreIds, reason} = req.query;
+    
     if(!tableName) {
         return errord400(res, "Missing Table Name", "SYS.MSG.MISSING_TABLE_NAME");
     }
@@ -94,10 +105,22 @@ export const restoreOrForeverDeleteHandler = (req, res, next) => {
         restoreIds = null;
     }
 
-    const sql = `SELECT * FROM restore_or_forever_delete(?, ?, ?, ?) as json`;
-    select(req, res, sql, [tableName, deleteIds, restoreIds, userId]).then((data) => {
-        res.status(200).send(data[0].json);
-    })    
+    if(!reason) {
+        reason = null;
+    }
+
+    if(companyId) {
+        const sql = `SELECT * FROM restore_or_forever_delete(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) as json`;
+        select(req, res, sql, [tableName, deleteIds, restoreIds, userId, companyId, branchId, menuPath, ipClient, device, os, browser, reason, fieldName]).then((data) => {
+            res.status(200).send(data[0].json);
+        })   
+    } else {
+        const sql = `SELECT * FROM restore_or_forever_delete(?, ?, ?, ?) as json`;
+        select(req, res, sql, [tableName, deleteIds, restoreIds, userId]).then((data) => {
+            res.status(200).send(data[0].json);
+        })   
+    }
+     
 }
 
 export const findDeletedRecordsHandler = (req, res, next) => {

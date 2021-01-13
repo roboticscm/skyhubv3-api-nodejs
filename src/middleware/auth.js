@@ -2,8 +2,7 @@ import { convertFieldsToCamelCase } from "$/src/lib/util"
 import { select } from '$/src/db/template';
 import { PUBLIC_KEY } from '$/src/index';
 import jwt from 'jsonwebtoken';
-
-const sha1 = require('js-sha1');
+import { encodePassword } from '$/src/lib/util';
 
 export const basicAuth = async (req, res, next) => {
     const b64auth = (req.headers.authorization || '').split(' ')[1] || ''
@@ -30,7 +29,7 @@ export const basicAuth = async (req, res, next) => {
             })
         } else {
             const foundEncodedPassword = accounts[0].password
-            const enterEncodedPassword = sha1(`${process.env.PRIVATE_KEY || 'Skyhub@010116'}${password}`)
+            const enterEncodedPassword = encodePassword(password);
         
             if (foundEncodedPassword === enterEncodedPassword) {
                 req.body = {...req.body, username, userId: accounts[0].id, fullName: '...'} 

@@ -55,4 +55,7 @@ export const registerRoute = (app) => {
 
     app.use('/menu-control', require('$/src/features/menu-control/route'));
     log.info('registered: /menu-control');
+
+    app.use('/skylog', require('$/src/features/skylog/route'));
+    log.info('registered: /skylog');
 }

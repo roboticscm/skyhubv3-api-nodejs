@@ -3,8 +3,6 @@ import { getCurrentTime } from '$/src/lib/util';
 import { saveOrUpdate } from '$/src/db/template';
 
 export const saveMenuHistoryHandler = (req, res, next) => {
-    const knex = getKnexInstance();
-
     const { menuId, depId } = req.body;
     const { userId } = req.query;
     const lastAccess = getCurrentTime();
