@@ -1,7 +1,7 @@
 import { select } from '$/src/db/template';
 import { convertFieldsToCamelCase } from '$/src/lib/util';
 
-export const findHandler = (req, res, next) => {
+export const findHandler = async (req, res, next) => {
     const { companyId } = req.query;
     const locale = req.query.locale || 'vi-VN';
 
@@ -25,7 +25,7 @@ export const findHandler = (req, res, next) => {
 }
 
 
-export const findInitialHandler = (req, res, next) => {
+export const findInitialHandler = async (req, res, next) => {
     const {locale} = req.query;
     const sql = `
         SELECT * FROM find_language(?, ?)

@@ -309,8 +309,8 @@ app.get('/notify', (req, res, next) => {
 class Server {
     constructor() {
         this.app = app
-        PRIVATE_KEY = fs.readFileSync(path.join(__dirname, 'keys/private-pkcs8.pem'));
-        PUBLIC_KEY = fs.readFileSync(path.join(__dirname, 'keys/public.pem'));
+        PRIVATE_KEY = fs.readFileSync(path.join(__dirname, 'keys/app.rsa'));
+        PUBLIC_KEY = fs.readFileSync(path.join(__dirname, 'keys/app.rsa.pub'));
     }
 
     init () {
@@ -337,7 +337,6 @@ const notifyListener = async () => {
         connection.query('LISTEN event_channel');
         connection.on('notification', (msg) => {
             const obj = JSONbigString.parse(msg.payload);
-            obj.data = convertFieldsToCamelCase(obj.data);
             notify$.next(JSON.stringify(obj));
         });
         await knex.client.releaseConnection(connection);

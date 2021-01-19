@@ -1,8 +1,7 @@
-import { getKnexInstance } from '$/src/db/util';
 import { getCurrentTime } from '$/src/lib/util';
 import { saveOrUpdate } from '$/src/db/template';
 
-export const saveMenuHistoryHandler = (req, res, next) => {
+export const saveHandler = async (req, res, next) => {
     const { menuId, depId } = req.body;
     const { userId } = req.query;
     const lastAccess = getCurrentTime();

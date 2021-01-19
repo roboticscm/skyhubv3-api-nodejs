@@ -1,17 +1,9 @@
 import { select, selectObj } from '$/src/db/template';
 import { getKnexInstance } from '$/src/db/util';
+import { errord400 } from '$/src/errors/common'
 
 export const getInitialHandler = async (req, res, next) => {
     const { userId } = req.query;
-
-    if (!userId) {
-        res.status(400).send({
-            message: 'Missing User ID',
-            key: 'SYS.MSG.MISSING_USER_ID',
-        })
-        return;
-    }
-
     const sql = `SELECT * FROM get_last_user_settings(?)`;
     select(req, res, sql, [userId]).then((settings) => res.status(200).send(settings))
 }
@@ -48,7 +40,7 @@ export const saveUserSettingsHandler = async (req, res, next) => {
     })
 }
 
-export const getUserSettingsHandler = (req, res, next) => {
+export const getUserSettingsHandler = async (req, res, next) => {
     const { userId, menuPath, elementId, key, keys, branchId } = req.query;
     selectObj(res, 'user_setting', (builder) => {
         builder.where('accountId', userId);

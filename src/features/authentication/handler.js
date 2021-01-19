@@ -3,9 +3,9 @@ import { getKnexInstance } from '$/src/db/util';
 import { select, del, selectObj, update } from '$/src/db/template';
 import jwt from 'jsonwebtoken';
 import { encodePassword } from '$/src/lib/util';
-import { errorf } from '$/src/errors/common';
+import { errord400 } from '$/src/errors/common';
 
-export const loginHandler = (req, res, next) => {
+export const loginHandler = async (req, res, next) => {
     const { username, userId, fullName } = req.body;
 
     const accessToken = generateToken(false, userId, username, fullName);
@@ -35,10 +35,12 @@ const updateRefreshToken = async (userId, token) => {
 export const refreshTokenHandler = async (req, res, next) => {
     const refreshToken = req.body.token;
     if (!refreshToken) {
-        res.status(400).send({
-            messgage: 'Missing refresh token',
-            key: 'AUTH.MSG.MISSING_TOKEN_ERROR'
+        res.status(401).send({
+            messgage: 'Required Login Error',
+            field: '',
+            statusCode: 401
         });
+        return;
     }
 
     const sql = `
@@ -51,7 +53,7 @@ export const refreshTokenHandler = async (req, res, next) => {
     if (!refreshTokens || refreshTokens.length === 0) {
         res.status(401).send({
             messgage: 'Required Login Error',
-            key: '',
+            field: '',
             statusCode: 401
         });
         return;
@@ -61,7 +63,7 @@ export const refreshTokenHandler = async (req, res, next) => {
         if (err) {
             res.status(401).send({
                 messgage: 'Required Login Error',
-                key: '',
+                field: '',
                 statusCode: 401
             });
         } else {
@@ -91,7 +93,7 @@ export const generateToken = (isRefreshToken, userId, username, fullName) => {
 }
 
 
-export const logoutHandler = (req, res, next) => {
+export const logoutHandler = async (req, res, next) => {
     const { userId } = req.query;
 
     if(!userId) {
@@ -116,20 +118,18 @@ export const logoutHandler = (req, res, next) => {
     } 
 }
 
-export const changePasswordHandler = (req, res, next) => {
+export const changePasswordHandler = async (req, res, next) => {
     const { userId } = req.query;
     const { currentPassword, newPassword } = req.body;
+    const encodeCurrentPassword = encodePassword(currentPassword);
 
-    selectObj(res, 'account', (wb) => wb.where({id: userId})).then((r) => {
+    selectObj(res, 'account', (wb) => wb.where({id: userId, password: encodeCurrentPassword})).then((r) => {
         if(r.length > 0) {
-            const encodeCurrentPassword = encodePassword(currentPassword);
-            if(encodeCurrentPassword === r[0].password) {
-                update(req, res, 'account', (wb) => wb.where({id: userId}), {password: encodePassword(newPassword)}).then((ret) => {
-                    res.status(200).send(ret);
-                });
-            } else {
-                errorf(res, "currentPassword", "SYS.MSG.CURRENT_PASSWORD_IS_INCORRECT")
-            }
+            update(req, res, 'account', (wb) => wb.where({id: userId}), {password: encodePassword(newPassword)}).then((ret) => {
+                res.status(200).send(ret);
+            });
+        } else {
+            errord400(res, "SYS.MSG.CURRENT_PASSWORD_IS_INCORRECT", "currentPassword");
         }
     });
 }

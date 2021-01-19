@@ -2,7 +2,7 @@ import { select, save } from '$/src/db/template';
 
 
 
-export const findHandler = (req, res, next) => {
+export const findHandler = async (req, res, next) => {
     const { menuPath, startDate, endDate } = req.query;
     let sql = `
         SELECT l.id, l.created_at as date, a.username as user, l.reason, l.description, l.short_description as "shortDescription", '' as view
@@ -30,7 +30,7 @@ export const findHandler = (req, res, next) => {
 }
 
 
-export const saveHandler = (req, res, next) => {
+export const saveHandler = async (req, res, next) => {
     const { companyId, branchId, menuPath, ipClient, device, os, browser, shortDescription, description, reason} = req.body
     save(req, res, 'sky_log', {companyId, branchId, menuPath, ipClient, device, os, browser, shortDescription, description, reason}).then((r) => {
         res.status(200).send(r);

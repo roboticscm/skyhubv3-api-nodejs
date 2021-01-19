@@ -1,39 +1,39 @@
 import { select, softDelete } from '$/src/db/template';
 import { errord400 } from '$/src/errors/common';
 
-export const findSimpleListHandler = (req, res, next) => {
+export const findSimpleListHandler = async (req, res, next) => {
     const { tableName, columns, orderBy, page, pageSize, onlyMe, userId,  includeDisabled } = req.query;
 
     if(!tableName) {
-        return errord400(res, "Missing Table Name", "SYS.MSG.MISSING_TABLE_NAME");
+        return errord400(res, "SYS.MSG.MISSING_TABLE_NAME");
     }
 
     if(!columns) {
-        return errord400(res, "Missing Column List", "SYS.MSG.MISSING_COLUMN_LIST");
+        return errord400(res, "SYS.MSG.MISSING_COLUMN_LIST");
     }
 
     if(!orderBy) {
-        return errord400(res, "Missing Order by column", "SYS.MSG.MISSING_ORDER_BY_COLUMN");
+        return errord400(res, "SYS.MSG.MISSING_ORDER_BY_COLUMN");
     }
 
     if(!page) {
-        return errord400(res, "Missing Page", "SYS.MSG.MISSING_PAGE");
+        return errord400(res, "SYS.MSG.MISSING_PAGE");
     }
 
     if(!pageSize) {
-        return errord400(res, "Missing Page Size", "SYS.MSG.MISSING_PAGE_SIZE");
+        return errord400(res, "SYS.MSG.MISSING_PAGE_SIZE");
     }
 
     if(!onlyMe) {
-        return errord400(res, "Missing Only Me", "SYS.MSG.MISSING_ONLY_ME");
+        return errord400(res, "SYS.MSG.MISSING_ONLY_ME");
     }
 
     if(!userId) {
-        return errord400(res, "Missing User ID", "SYS.MSG.MISSING_USER_ID");
+        return errord400(res, "SYS.MSG.MISSING_USER_ID");
     }
 
     if(!includeDisabled) {
-        return errord400(res, "Missing Include Disabled", "SYS.MSG.MISSING_INCLUDE_DISABLED");
+        return errord400(res, "SYS.MSG.MISSING_INCLUDE_DISABLED");
     }
 
     const sql = `SELECT * FROM find_simple_list(?, ?, ?, ?, ?, ?, ?, ?) as json`;
@@ -43,16 +43,16 @@ export const findSimpleListHandler = (req, res, next) => {
 }
 
 
-export const getOneHandler = (req, res, next) => {
+export const getOneHandler = async (req, res, next) => {
     const { tableName} = req.query;
     const { id } = req.params;
 
     if(!tableName) {
-        return errord400(res, "Missing Table Name", "SYS.MSG.MISSING_TABLE_NAME");
+        return errord400(res, "SYS.MSG.MISSING_TABLE_NAME");
     }
 
     if(!id) {
-        return errord400(res, "Missing Id", "SYS.MSG.MISSING_ID");
+        return errord400(res, "SYS.MSG.MISSING_ID");
     }
 
     const sql = `SELECT * FROM get_one_by_id(?, ?) as json`;
@@ -61,12 +61,12 @@ export const getOneHandler = (req, res, next) => {
     })    
 }
 
-export const hasAnyDeletedRecordHandler = (req, res, next) => {
+export const hasAnyDeletedRecordHandler = async (req, res, next) => {
     const { tableName, userId} = req.query;
     let { onlyMe } = req.query;
 
     if(!tableName) {
-        return errord400(res, "Missing Table Name", "SYS.MSG.MISSING_TABLE_NAME");
+        return errord400(res, "SYS.MSG.MISSING_TABLE_NAME");
     }
 
     if(!onlyMe) {
@@ -79,22 +79,12 @@ export const hasAnyDeletedRecordHandler = (req, res, next) => {
     })    
 }
 
-// _company_id bigint,
-// 	_branch_id bigint,
-// 	_menu_path text,
-// 	_ip_client text,
-// 	_device text,
-// 	_os text,
-// 	_browser text,
-//     _reason text
-    
-
-export const restoreOrForeverDeleteHandler = (req, res, next) => {
+export const restoreOrForeverDeleteHandler = async (req, res, next) => {
     const { tableName, userId, companyId, branchId, menuPath, ipClient, device, os, browser, fieldName} = req.query;
     let { deleteIds, restoreIds, reason} = req.query;
     
     if(!tableName) {
-        return errord400(res, "Missing Table Name", "SYS.MSG.MISSING_TABLE_NAME");
+        return errord400(res, "SYS.MSG.MISSING_TABLE_NAME");
     }
 
     if(!deleteIds) {
@@ -123,16 +113,16 @@ export const restoreOrForeverDeleteHandler = (req, res, next) => {
      
 }
 
-export const findDeletedRecordsHandler = (req, res, next) => {
+export const findDeletedRecordsHandler = async (req, res, next) => {
     const { tableName, columns, userId} = req.query;
     let { onlyMe } = req.query;
 
     if(!tableName) {
-        return errord400(res, "Missing Table Name", "SYS.MSG.MISSING_TABLE_NAME");
+        return errord400(res, "SYS.MSG.MISSING_TABLE_NAME");
     }
 
     if(!columns) {
-        return errord400(res, "Missing Columns list", "SYS.MSG.MISSING_COLUMN_LIST");
+        return errord400(res, "SYS.MSG.MISSING_COLUMN_LIST");
     }
 
     if(!onlyMe) {
@@ -146,15 +136,15 @@ export const findDeletedRecordsHandler = (req, res, next) => {
 }
 
 
-export const softDeleteManyHandler = (req, res, next) => {
+export const softDeleteManyHandler = async (req, res, next) => {
     const { tableName, userId, ids} = req.query;
     
     if(!tableName) {
-        return errord400(res, "Missing Table Name", "SYS.MSG.MISSING_TABLE_NAME");
+        return errord400(res, "SYS.MSG.MISSING_TABLE_NAME");
     }
 
     if(!ids) {
-        return errord400(res, "Missing Ids", "SYS.MSG.MISSING_IDS");
+        return errord400(res, "SYS.MSG.MISSING_IDS");
     }
 
     softDelete(req, res, tableName, (builder) => {

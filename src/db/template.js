@@ -85,9 +85,7 @@ export const saveOrUpdate = async (req, res, tableName, updateWhereCallback, upd
                         ...insertPayload,
                         ...createSystemFields(userId)
                     }).then((ret) => {
-                        resolve({
-                            message: ret
-                        });
+                        resolve(ret[0]);
                     }).catch((err) => error400(res, err));
                 } else {
                     resolve({
@@ -105,9 +103,7 @@ export const saveOrUpdate = async (req, res, tableName, updateWhereCallback, upd
                 ...insertPayload,
                 ...createSystemFields(userId)
             }).then((ret) => {
-                resolve({
-                    message: ret
-                });
+                resolve(ret[0]);
             }).catch((err) => error400(res, err))
             .finally(() => {
                 knex.destroy();
@@ -126,9 +122,7 @@ export const save = async (req, res, tableName, insertPayload) => {
             ...insertPayload,
             ...createSystemFields(userId)
         }).then((ret) => {
-            resolve({
-                message: ret
-            });
+            resolve(ret[0]);
         }).catch((err) => error400(res, err))
         .finally(() => {
             knex.destroy();

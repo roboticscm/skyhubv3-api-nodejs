@@ -1,6 +1,6 @@
 import { select } from '$/src/db/template';
 
-export const findHandler =  (req, res, next) => {
+export const findHandler =  async (req, res, next) => {
     const { depId, userId } = req.query;
 
     if(!depId) {
@@ -21,8 +21,8 @@ export const findHandler =  (req, res, next) => {
     }
 
     const sql = `SELECT * FROM find_menu(?, ?)`;
-    select(req, res, sql, [userId, depId]).then((departments) => {
-        res.status(200).send(departments);
+    select(req, res, sql, [userId, depId]).then((menu) => {
+        res.status(200).send(menu);
     })
 }
 

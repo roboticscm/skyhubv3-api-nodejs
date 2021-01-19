@@ -1,6 +1,6 @@
 import { del, select, saveOrUpdate, selectObj } from '$/src/db/template';
 
-export const findHandler =  (req, res, next) => {
+export const findHandler =  async (req, res, next) => {
     const { menuPath } = req.query;
     
     if(!menuPath) {
@@ -12,15 +12,14 @@ export const findHandler =  (req, res, next) => {
     }
 
     
-    const sql = `SELECT * FROM find_menu_control(?) as json`;
+    const sql = `SELECT * FROM find_menu_control(?)`;
     select(req, res, sql, [menuPath]).then((r) => {
         res.status(200).send(r);
     })
 }
 
-export const saveOrDeleteHandler =  (req, res, next) => {
+export const saveOrDeleteHandler =  async (req, res, next) => {
     const { menuPath, menuControls } = req.body;
-
     selectObj(res, 'menu', (builder) => builder.where({path: menuPath})).then((foundMenu) => {
         if(foundMenu.length > 0) {
             for(const row of menuControls) {
